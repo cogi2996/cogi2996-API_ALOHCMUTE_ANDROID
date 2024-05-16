@@ -101,9 +101,7 @@ public class UserRestController {
         User sourceUser = userService.findUserById(userId);
         User targetUser = userService.findUserById(targetId);
         int dbUserId = authenticationFacade.getUser().getUserId();
-        if (sourceUser == null || targetUser == null || dbUserId != targetId) {
-            return ResponseEntity.badRequest().body(null);
-        }
+
         FollowId follow = FollowId.builder()
                 .sourceId(userId)
                 .targetId(targetId)
@@ -123,13 +121,13 @@ public class UserRestController {
             User sourceUser = userService.findUserById(userId);
             User targetUser = userService.findUserById(targetId);
             int dbUserId = authenticationFacade.getUser().getUserId();
+            System.out.println(sourceUser.getFullName());
+            System.out.println(targetUser.getFullName());
             System.out.println("here end point");
-            if (sourceUser == null || targetUser == null || dbUserId != targetId) {
-                return ResponseEntity.badRequest().body(null);
-            }
+
             FollowId follow = FollowId.builder()
-                    .sourceId(userId)
-                    .targetId(targetId)
+                    .sourceId(targetId)
+                    .targetId(userId)
                     .build();
             followService.acceptFollow(follow);
             ResponseDTO responseDTO = ResponseDTO.builder()
@@ -242,20 +240,20 @@ public class UserRestController {
     public ResponseEntity<?> getFollowing(@PathVariable int userId,
                                           @RequestParam(defaultValue = "0") Integer pageNum,
                                           @RequestParam(defaultValue = "5") Integer pageSize,
-                                          @RequestParam(defaultValue = "userId") String sortBy,
-                                          @RequestParam(defaultValue = "") String curentUserId
+                                          @RequestParam(defaultValue = "userId") String sortBy
     ) {
+        int currentUserId = authenticationFacade.getUser().getUserId();
         User user = userService.findUserById(userId);
         if (user == null) {
             return ResponseEntity.noContent().build();
         }
         List<User> followings = userService.findFollowingUserByUserId(userId, pageNum, pageSize, sortBy);
-        if (!curentUserId.isEmpty()) {
+        if (currentUserId != userId) {
             List<ObjectNode> followersDTO = followings
                     .stream()
                     .map(u -> {
                         int followerId = u.getUserId();
-                        Integer followed = followService.existsFollowBySourceIdAndTargetId(Integer.parseInt(curentUserId), followerId);
+                        Integer followed = followService.existsFollowBySourceIdAndTargetId(currentUserId, followerId);
                         UserDTO userDTO = convertToDTO.convertToDTO(u);
                         ObjectNode node = mapper.valueToTree(userDTO);
                         node.put("isFollowed", followed);

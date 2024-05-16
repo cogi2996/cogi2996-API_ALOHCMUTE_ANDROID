@@ -10,6 +10,7 @@ import com.example.social_media.security.IAuthenticationFacade;
 import com.example.social_media.security.Role;
 import com.example.social_media.service.AuthenticationService;
 import com.example.social_media.service.EmailService;
+import com.google.firebase.auth.FirebaseAuthException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -99,7 +100,7 @@ public class AuthenticaionController {
     }
 
     @PostMapping("/register/OTP")
-    public String registerOTP(@Param("otp") String otp, HttpSession session) {
+    public String registerOTP(@Param("otp") String otp, HttpSession session) throws FirebaseAuthException {
         // authen otp not correct return to register
         if(!session.getAttribute("OTP").equals(otp)){
             return "redirect:/auth/register";

@@ -3,6 +3,8 @@ package com.example.social_media.service;
 import com.example.social_media.DTO.AuthenticationRequest;
 import com.example.social_media.DTO.AuthenticationResponse;
 import com.example.social_media.DTO.ChangePassRequest;
+import com.example.social_media.FirebaseInitialization;
+import com.example.social_media.config.FireBaseService;
 import com.example.social_media.dao.AccountRepository;
 import com.example.social_media.dao.TokenRepository;
 import com.example.social_media.dao.UserRepository;
@@ -11,6 +13,7 @@ import com.example.social_media.entity.Token;
 import com.example.social_media.entity.TokenType;
 import com.example.social_media.entity.User;
 import com.example.social_media.security.AuthenticationFacade;
+import com.google.firebase.auth.FirebaseAuthException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +39,10 @@ public class AuthenticationService {
     private final TokenRepository tokenRepository;
     private final UserDetailsService userDetailsService;
     private final AuthenticationFacade authenticationFacade;
+    private final FireBaseService fireBaseService;
 
-    public AuthenticationResponse register(Account theAccount, User newUser) {
+    public AuthenticationResponse register(Account theAccount, User newUser) throws FirebaseAuthException {
+        fireBaseService.addUser(theAccount.getEmail(), theAccount.getPassword());
         var account = Account.builder()
                 .email(theAccount.getEmail())
                 .password(passwordEncoder.encode(theAccount.getPassword())) // bởi vì encrypt nên giờ phải decode

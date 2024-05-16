@@ -42,7 +42,6 @@ public class PostRestController {
 
     // cho phép các domain khác gọi API này
     @PostMapping
-//    @CrossOrigin(origins = "*")
     public ResponseEntity<PostDTO> createPost(@RequestBody PostDTO post) {
         Post newPost = convertToEntity.convertToEntity(post);
         // get current authenticated user
@@ -79,11 +78,15 @@ public class PostRestController {
             System.out.println("postTime:"+ post.getPostCreateTime());
             System.out.println("postDTOTime:"+ postDTO.getPostCreateTime());
             postDTO.setPostCreateTime(post.getPostCreateTime().atZone(ZoneId.of("GMT+7")));
-            postDTO.setCountLike(likePostService.countLikesByPostId(postId));
+            // test count like
+//            postDTO.setCountLike(likePostService.countLikesByPostId(postId));
+            postDTO.setCountLike(3);
             UserDTO userDTO = convertToDTO.convertToDTO(post.getUser());
             postDTO.setUserDTO(userDTO);
             ObjectNode node = mapper.valueToTree(postDTO);
-            node.put("liked",liked);
+            // test liked
+//            node.put("liked",liked);
+            node.put("liked",true);
             System.out.println("count like: "+likePostService.countLikesByPostId(postId));
             return node;
         }).toList();
