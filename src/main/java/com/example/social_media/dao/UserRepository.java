@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User,Integer> {
+
+
     User findUserByUserId( int userId);
     //
     @Query("SELECT u FROM User u join Follow f on u.userId = f.followId.sourceId " +

@@ -72,17 +72,15 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
-
         return ResponseEntity.ok(authenticationService.authenticate(request));
 
     }
 
     @PostMapping("/change-password")
-    public ResponseEntity<ModelMap> changePassword(@RequestBody ChangePassRequest changePassRequest){
+    public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest changePassRequest){
         authenticationService.changePassword(changePassRequest);
         ModelMap modelMap = new ModelMap();
-        modelMap.addAttribute("message","Password changed successfully");
-        return ResponseEntity.ok(modelMap);
+        return ResponseEntity.ok("succes change password");
     }
 
     private Account convertToAccountEntity(AccountDTO accountDTO){

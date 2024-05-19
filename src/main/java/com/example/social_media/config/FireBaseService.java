@@ -12,12 +12,15 @@ public class FireBaseService {
     public void addUser(String email, String password) throws FirebaseAuthException {
         UserRecord.CreateRequest request = new UserRecord.CreateRequest()
                 .setEmail(email)
-                .setEmailVerified(false)
+                .setEmailVerified(true)
                 .setPassword(password)
                 .setDisabled(false);
         UserRecord userRecord = FirebaseAuth.getInstance().createUser(request);
         System.out.println("Successfully created new user: " + userRecord.getUid());
     }
+
+
+
 
 
 }

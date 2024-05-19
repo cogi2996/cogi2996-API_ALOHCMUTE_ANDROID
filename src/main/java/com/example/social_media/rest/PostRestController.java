@@ -62,6 +62,7 @@ public class PostRestController {
             @RequestParam(defaultValue = "5") Integer pageSize,
             @RequestParam(defaultValue = "postCreateTime") String sortBy
     ) {
+        System.out.println("GENNN");
         User user = authenticationFacade.getUser();
         int userId = user.getUserId();
         List<Integer> followingId = user.getFollowingUsers().stream().map(User::getUserId).toList();
@@ -79,14 +80,14 @@ public class PostRestController {
             System.out.println("postDTOTime:"+ postDTO.getPostCreateTime());
             postDTO.setPostCreateTime(post.getPostCreateTime().atZone(ZoneId.of("GMT+7")));
             // test count like
-//            postDTO.setCountLike(likePostService.countLikesByPostId(postId));
-            postDTO.setCountLike(3);
+            postDTO.setCountLike(likePostService.countLikesByPostId(postId));
+//            postDTO.setCountLike(3);
             UserDTO userDTO = convertToDTO.convertToDTO(post.getUser());
             postDTO.setUserDTO(userDTO);
             ObjectNode node = mapper.valueToTree(postDTO);
             // test liked
-//            node.put("liked",liked);
-            node.put("liked",true);
+            node.put("liked",liked);
+//            node.put("liked",true);
             System.out.println("count like: "+likePostService.countLikesByPostId(postId));
             return node;
         }).toList();

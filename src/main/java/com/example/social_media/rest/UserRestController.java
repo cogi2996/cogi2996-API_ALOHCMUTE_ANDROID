@@ -42,12 +42,23 @@ public class UserRestController {
     private final NotificationService notificationService;
 
 
+
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable int userId) {
         User user = userService.findUserById(userId);
         if (user == null) {
             return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok().body(ResponseDTO.builder()
+                .message("success")
+                .data(user)
+                .build());
+    }
+
+    // current user
+    @PostMapping("/current")
+    public ResponseEntity<?> getCurrentUser() {
+        User user = authenticationFacade.getUser();
         return ResponseEntity.ok().body(ResponseDTO.builder()
                 .message("success")
                 .data(user)
@@ -115,7 +126,6 @@ public class UserRestController {
 
     @PatchMapping("/{userId}/followers/{targetId}")
     public ResponseEntity<?> acceptFollow(@PathVariable int userId, @PathVariable("targetId") int targetId) {
-
         try {
             // kiểm tra id
             User sourceUser = userService.findUserById(userId);

@@ -18,7 +18,6 @@ public class FirebaseInitialization {
     public FirebaseApp createFireBaseApp() throws IOException {
             FileInputStream serviceAccount =
                     new FileInputStream("D:\\android\\social_media_v2\\src\\main\\resources\\serviceAccountKey.json");
-
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .build();
