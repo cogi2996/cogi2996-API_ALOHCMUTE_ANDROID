@@ -37,7 +37,6 @@ public class AuthenticationController {
     private final AccountService accountService;
     private final EmailService emailService;
 
-    //
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(@RequestBody AccountDTO accountDTO) throws FirebaseAuthException {
         accountDTO.getUserDTO().setCreateDate(new Date(System.currentTimeMillis()));
@@ -50,7 +49,6 @@ public class AuthenticationController {
         AuthenticationResponse token =  authenticationService.register(newAccount,newUser);
         String otp = OTPGenerator.generateOTP();
         emailService.SendEmail(accountDTO.getEmail(), "OTP alohcmute, please don't leak this!", otp);
-
         return  ResponseEntity.ok(token);
     }
 
@@ -73,14 +71,13 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(authenticationService.authenticate(request));
-
     }
 
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestBody ChangePassRequest changePassRequest){
         authenticationService.changePassword(changePassRequest);
         ModelMap modelMap = new ModelMap();
-        return ResponseEntity.ok("succes change password");
+        return ResponseEntity.ok(ResponseDTO.builder().message("Change password successfully").build());
     }
 
     private Account convertToAccountEntity(AccountDTO accountDTO){

@@ -23,8 +23,13 @@ public interface PostService {
     Page<Post> findAllPosts(int pageNum, int pageSize, String SortBy);
 
     void deleteById(int postId);
+
     int countAllPosts();
 
 
     void deleteByPostId(int postId);
+
+    Post findPostById(int postId);
+
+    Boolean isLiked(int userId, int postId);
 }

@@ -30,4 +30,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
     //count all post
     @Query("select count(p) from Post p")
     int countAllPosts();
+
+    // check user like post
+    @Query("select count(l) from LikePost l where l.likePostId.userId = ?1 and l.likePostId.postId = ?2")
+    Boolean isLiked(int userId, int postId);
 }

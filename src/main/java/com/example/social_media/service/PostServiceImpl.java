@@ -71,5 +71,15 @@ public class PostServiceImpl implements PostService {
         notificationLikeRepository.deleteByPostId(postId);
     }
 
+    @Override
+    public Post findPostById(int postId) {
+        return postRepository.findOne(postId);
+    }
+
+    @Override
+    public Boolean isLiked(int userId, int postId) {
+        return postRepository.isLiked(userId, postId);
+    }
+
 
 }

@@ -42,7 +42,7 @@ public class AuthenticationService {
     private final FireBaseService fireBaseService;
 
     public AuthenticationResponse register(Account theAccount, User newUser) throws FirebaseAuthException {
-        fireBaseService.addUser(theAccount.getEmail(), theAccount.getPassword());
+//        fireBaseService.addUser(theAccount.getEmail(), theAccount.getPassword());
         var account = Account.builder()
                 .email(theAccount.getEmail())
                 .password(passwordEncoder.encode(theAccount.getPassword())) // bởi vì encrypt nên giờ phải decode

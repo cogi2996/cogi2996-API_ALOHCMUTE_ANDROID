@@ -11,10 +11,12 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
     public void SendEmail(String to, String subject, String text) {
+        System.out.println("Sending email...");
         // send email
         MimeMessagePreparator messagePreparator = mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             messageHelper.setFrom("ta84578@gmail.com");
+//            messageHelper.setFrom("alohcmute-no-reply@gmail.com");
             messageHelper.setTo(to);
             messageHelper.setSubject(subject);
             String htmlContent = "<html><body><h1>"+text+"</h1></body></html>";
