@@ -26,7 +26,6 @@ public interface PostService {
 
     int countAllPosts();
 
-
     void deleteByPostId(int postId);
 
     Post findPostById(int postId);
